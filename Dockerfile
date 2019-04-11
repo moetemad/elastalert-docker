@@ -1,8 +1,9 @@
 FROM python:2.7-alpine AS builder
+ARG ELASTALERT_VERSION=0.1.39
+ARG ELASTALERT_HOME=/opt/elastalert
 
-ENV ELASTALERT_HOME /opt/elastalert
 RUN apk add --update ca-certificates openssl-dev openssl libffi-dev gcc musl-dev && \
-    wget https://github.com/Yelp/elastalert/archive/v0.1.39.zip -O elastalert.zip && \
+    wget https://github.com/Yelp/elastalert/archive/v${ELASTALERT_VERSION}.zip -O elastalert.zip && \
     unzip elastalert.zip && \
     mv elastalert-* "${ELASTALERT_HOME}"
 
