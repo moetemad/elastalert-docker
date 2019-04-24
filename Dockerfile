@@ -8,7 +8,11 @@ RUN apk add --update ca-certificates openssl-dev openssl libffi-dev gcc musl-dev
     mv elastalert-* "${ELASTALERT_HOME}"
 
 WORKDIR "${ELASTALERT_HOME}"
-RUN python setup.py install && \
+
+# Needed until https://github.com/Yelp/elastalert/pull/2194 is merged
+RUN sed -i 's/elasticsearch/elasticsearch<7.0.0/' requirements.txt && \
+    sed -i "s/'elasticsearch',/'elasticsearch<7.0.0',/" setup.py && \
+    python setup.py install && \
     pip install -r requirements.txt
 
 FROM python:2.7-alpine AS runner
